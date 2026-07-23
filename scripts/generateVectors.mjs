@@ -56,6 +56,8 @@ async function generateVectors() {
 
   // Save the massive vector array into our Zero-Cost JSON Database!
   const db = { documents };
+  const outDir = path.dirname(OUTPUT_FILE);
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(db, null, 2));
   
   console.log(`✅ Successfully vectorized ${documents.length} projects into data/vector_store.json!`);
