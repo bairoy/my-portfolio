@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Chatbot from "@/components/Chatbot";
 import CommandPalette from "@/components/CommandPalette";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Baiju Yadav Portfolio",
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
+        <Script src="https://identity.netlify.com/v1/netlify-identity-widget.js" strategy="beforeInteractive" />
         <Navbar />
         <CommandPalette />
         <Chatbot />
