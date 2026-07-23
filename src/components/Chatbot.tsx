@@ -1,0 +1,119 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+
+export default function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<{ role: "user" | "ai", text: string }[]>([
+    { role: "ai", text: "Hi! I'm Baiju's AI assistant. Ask me anything about his experience or projects!" }
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function sendMessage(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput("");
+    setMessages(prev => [...prev, { role: "user", text: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      // This calls the Mega RAG API we just built!
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage })
+      });
+
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      setMessages(prev => [...prev, { role: "ai", text: data.response }]);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: "ai", text: "Oops, my serverless brain disconnected. Try again!" }]);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <>
+      {/* Floating Action Button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className={`fixed bottom-6 right-6 p-4 rounded-full bg-white text-black shadow-2xl transition-transform hover:scale-110 z-50 ${isOpen ? "hidden" : "block"}`}
+      >
+        <MessageCircle className="h-6 w-6" />
+      </button>
+
+      {/* Chat Window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 bg-white/5">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="font-medium text-white">Ask Baiju's AI</span>
+              </div>
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Chat Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.role === "user"
+                      ? "bg-white text-black rounded-tr-sm"
+                      : "bg-white/10 text-white rounded-tl-sm border border-white/5"
+                    }`}>
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 border border-white/5">
+                    <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Input Area */}
+            <form onSubmit={sendMessage} className="p-4 border-t border-white/10 bg-white/5">
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask about my experience..."
+                  className="w-full bg-black border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-white/30"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isLoading}
+                  className="absolute right-2 p-1.5 bg-white text-black rounded-full disabled:opacity-50 transition-opacity"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

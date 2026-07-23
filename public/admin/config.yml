@@ -1,0 +1,25 @@
+backend:
+  name: git-gateway # We will connect this to GitHub later
+  branch: main # Branch to update (optional; defaults to master)
+  
+local_backend: true # This allows us to test it locally without GitHub!
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Subtitle", name: "subtitle", widget: "string", required: false}
+      - {label: "Emoji", name: "emoji", widget: "string", required: false}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Image", name: "imagePath", widget: "image", required: false}
+      - {label: "Github URL", name: "githubUrl", widget: "string", required: false}
+      - {label: "Live URL", name: "liveUrl", widget: "string", required: false}
+      - {label: "Tech Stack (Comma separated)", name: "tech", widget: "string", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
