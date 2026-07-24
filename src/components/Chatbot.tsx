@@ -47,7 +47,7 @@ export default function Chatbot() {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full bg-white text-black shadow-2xl transition-transform hover:scale-110 z-50 ${isOpen ? "hidden" : "block"}`}
+        className={`fixed bottom-6 right-6 p-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all hover:scale-110 z-50 animate-pulse ${isOpen ? "hidden" : "block"}`}
       >
         <MessageCircle className="h-6 w-6" />
       </button>
@@ -61,10 +61,10 @@ export default function Chatbot() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] bg-black/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(59,130,246,0.15)] z-50 flex flex-col overflow-hidden cursor-move"
+            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] bg-[#030712]/80 backdrop-blur-2xl border border-blue-500/30 rounded-2xl shadow-[0_0_50px_rgba(59,130,246,0.25)] z-50 flex flex-col overflow-hidden cursor-move ring-1 ring-white/10"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 bg-white/5">
+            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 bg-gradient-to-r from-blue-900/40 to-purple-900/40">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="font-medium text-white">Baiju AI</span>
@@ -78,9 +78,9 @@ export default function Chatbot() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.role === "user"
-                      ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-sm shadow-md"
-                      : "bg-white/5 backdrop-blur-md text-white rounded-tl-sm border border-white/10"
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === "user"
+                      ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-tr-sm shadow-lg shadow-blue-900/20"
+                      : "bg-blue-950/40 backdrop-blur-md text-blue-50 rounded-tl-sm border border-blue-500/20"
                     }`}>
                     {msg.role === "user" ? (
                       msg.text
@@ -103,7 +103,7 @@ export default function Chatbot() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/5 backdrop-blur-md rounded-2xl rounded-tl-sm px-4 py-3 border border-white/10">
+                  <div className="bg-blue-950/40 backdrop-blur-md rounded-2xl rounded-tl-sm px-4 py-3 border border-blue-500/20">
                     <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
                   </div>
                 </div>
@@ -111,19 +111,19 @@ export default function Chatbot() {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={sendMessage} className="p-4 border-t border-white/10 bg-white/5">
+            <form onSubmit={sendMessage} className="p-4 border-t border-white/10 bg-[#030712]/80">
               <div className="relative flex items-center">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about my experience..."
-                  className="w-full bg-black border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-white/30"
+                  placeholder="Ask me anything..."
+                  className="w-full bg-blue-950/20 border border-blue-500/30 rounded-full pl-4 pr-12 py-3 text-sm text-white placeholder:text-blue-300/50 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/50 transition-all"
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-2 p-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full disabled:opacity-50 transition-colors"
+                  className="absolute right-2 p-1.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-full disabled:opacity-50 transition-colors shadow-md"
                 >
                   <Send className="h-4 w-4" />
                 </button>
