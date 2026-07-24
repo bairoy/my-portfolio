@@ -23,11 +23,14 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      // This calls the Mega RAG API we just built!
+      // Pass the entire message history along with the new user message
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage })
+        body: JSON.stringify({ 
+          message: userMessage,
+          history: messages 
+        })
       });
 
       const data = await res.json();

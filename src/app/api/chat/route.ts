@@ -31,7 +31,7 @@ function cosineSimilarity(vecA: number[], vecB: number[]) {
 
 export async function POST(req: Request) {
   try {
-    const { message } = await req.json();
+    const { message, history = [] } = await req.json();
 
     if (!message) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
@@ -130,6 +130,13 @@ If the context does not contain the answer, politely say you don't know but dire
 Context:
 ${contextStr}`
         },
+        // Inject conversation history (filtering out the initial intro message to save tokens)
+        ...history
+          .filter((msg: any) => !msg.text.includes("Hi! I'm **Baiju AI**"))
+          .map((msg: any) => ({
+            role: msg.role === "ai" ? "assistant" : "user",
+            content: msg.text
+          })),
         {
           role: "user",
           content: message
