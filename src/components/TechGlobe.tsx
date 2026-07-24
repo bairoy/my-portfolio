@@ -383,7 +383,7 @@ function GlobeScene() {
         {skills.map((skill, i) => (
           <group key={skill.name}>
             <SkillDot position={skillPositions[i]} color={skill.color} />
-            <SkillLabel position={skillPositions[i]} skill={skill} index={i} hovered={hovered} setHovered={setHovered} />
+            <SkillLabel position={skillPositions[i]} skill={skill} hovered={hovered} setHovered={setHovered} />
           </group>
         ))}
       </group>
