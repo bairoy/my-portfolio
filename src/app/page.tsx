@@ -14,7 +14,9 @@ export default async function Home() {
   try {
     const fileContents = fs.readFileSync(vectorStorePath, "utf-8");
     const data = JSON.parse(fileContents);
-    projects = data.documents.map((doc: any) => doc.metadata);
+    projects = data.documents
+      .map((doc: any) => doc.metadata)
+      .filter((meta: any) => !meta.role); // Filter out the AI Identity profile
   } catch (error) {
     console.error("Failed to load projects from vector store:", error);
   }
