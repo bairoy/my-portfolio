@@ -11,31 +11,37 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const CONTENT_DIR = path.join(process.cwd(), "content", "projects");
+const PROJECT_DIR = path.join(process.cwd(), "content", "projects");
+const IDENTITY_DIR = path.join(process.cwd(), "content", "identity");
 const OUTPUT_FILE = path.join(process.cwd(), "data", "vector_store.json");
 
 async function generateVectors() {
   console.log("🚀 Starting Build-Time Vectorization...");
   
-  if (!fs.existsSync(CONTENT_DIR)) {
-    console.log("No projects found. Exiting.");
-    return;
-  }
-
-  const files = fs.readdirSync(CONTENT_DIR).filter(file => file.endsWith(".md"));
   const documents = [];
+  const directoriesToScan = [PROJECT_DIR, IDENTITY_DIR];
 
-  for (const file of files) {
-    const filePath = path.join(CONTENT_DIR, file);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    
-    // gray-matter parses the metadata and the main body text separately!
-    const { data: metadata, content: body } = matter(fileContent);
+  for (const dir of directoriesToScan) {
+    if (!fs.existsSync(dir)) continue;
 
-    // Combine everything into one giant string for the AI to "read"
-    const searchContext = `Project Title: ${metadata.title}\nDescription: ${metadata.description}\nDetails: ${body}`;
+    const files = fs.readdirSync(dir).filter(file => file.endsWith(".md"));
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      
+      const { data: metadata, content: body } = matter(fileContent);
 
-    console.log(`Generating embedding for: ${metadata.title}...`);
+      // We use a general search context, incorporating all metadata
+      let searchContext = "";
+      if (metadata.role) {
+        // It's the identity file
+        searchContext = `Identity Profile for ${metadata.title}\nRole: ${metadata.role}\nEmail: ${metadata.email}\nBiography & Skills: ${body}`;
+      } else {
+        // It's a project
+        searchContext = `Project Title: ${metadata.title}\nDescription: ${metadata.description || ""}\nDetails: ${body}`;
+      }
+
+      console.log(`Generating embedding for: ${metadata.title}...`);
     
     // Call OpenAI to turn the text into mathematical vectors
     const embeddingRes = await openai.embeddings.create({
@@ -52,6 +58,7 @@ async function generateVectors() {
         ...metadata 
       }
     });
+    }
   }
 
   // Save the massive vector array into our Zero-Cost JSON Database!

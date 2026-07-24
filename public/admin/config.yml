@@ -23,3 +23,14 @@ collections:
       - {label: "Live URL", name: "liveUrl", widget: "string", required: false}
       - {label: "Tech Stack (Comma separated)", name: "tech", widget: "string", required: false}
       - {label: "Body", name: "body", widget: "markdown"}
+  - name: "identity"
+    label: "Identity & Persona"
+    files:
+      - label: "My Profile"
+        name: "profile"
+        file: "content/identity/profile.md"
+        fields:
+          - {label: "Name", name: "title", widget: "string", default: "Baiju Yadav"}
+          - {label: "Role", name: "role", widget: "string", default: "AI Engineer & Developer"}
+          - {label: "Contact Email", name: "email", widget: "string"}
+          - {label: "General Bio & AI Instructions", name: "body", widget: "markdown"}
