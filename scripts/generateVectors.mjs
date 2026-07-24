@@ -35,7 +35,7 @@ async function generateVectors() {
       let searchContext = "";
       if (metadata.role) {
         // It's the identity file
-        searchContext = `Identity Profile for ${metadata.title}\nRole: ${metadata.role}\nEmail: ${metadata.email}\nBiography & Skills: ${body}`;
+        searchContext = `Identity Profile for ${metadata.title}\nRole: ${metadata.role}\nLinkedIn: ${metadata.linkedin}\nGitHub: ${metadata.github}\nBiography & Instructions: ${body}`;
       } else {
         // It's a project
         searchContext = `Project Title: ${metadata.title}\nDescription: ${metadata.description || ""}\nDetails: ${body}`;

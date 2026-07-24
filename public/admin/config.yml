@@ -32,5 +32,6 @@ collections:
         fields:
           - {label: "Name", name: "title", widget: "string", default: "Baiju Yadav"}
           - {label: "Role", name: "role", widget: "string", default: "AI Engineer & Developer"}
-          - {label: "Contact Email", name: "email", widget: "string"}
+          - {label: "LinkedIn URL", name: "linkedin", widget: "string", required: false}
+          - {label: "GitHub URL", name: "github", widget: "string", required: false}
           - {label: "General Bio & AI Instructions", name: "body", widget: "markdown"}
