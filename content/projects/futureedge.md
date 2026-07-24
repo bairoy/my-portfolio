@@ -4,6 +4,7 @@ subtitle: Multi-Agent AI Autonomous Trading Platform
 description: An autonomous AI-powered trading platform that analyzes market
   conditions, manages risk, and executes data-driven trades through a team of
   intelligent agents.
+imagePath: /uploads/futureedge.png
 githubUrl: https://github.com/bairoy/futureedge
 tech:
   - AI Agents
