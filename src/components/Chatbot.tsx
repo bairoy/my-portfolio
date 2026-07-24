@@ -56,10 +56,12 @@ export default function Chatbot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            drag
+            dragConstraints={{ left: -1000, right: 100, top: -800, bottom: 100 }}
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] bg-black/60 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(59,130,246,0.15)] z-50 flex flex-col overflow-hidden cursor-move"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 bg-white/5">
@@ -77,8 +79,8 @@ export default function Chatbot() {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.role === "user"
-                      ? "bg-white text-black rounded-tr-sm"
-                      : "bg-white/10 text-white rounded-tl-sm border border-white/5"
+                      ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-sm shadow-md"
+                      : "bg-white/5 backdrop-blur-md text-white rounded-tl-sm border border-white/10"
                     }`}>
                     {msg.role === "user" ? (
                       msg.text
@@ -101,8 +103,8 @@ export default function Chatbot() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 border border-white/5">
-                    <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                  <div className="bg-white/5 backdrop-blur-md rounded-2xl rounded-tl-sm px-4 py-3 border border-white/10">
+                    <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
                   </div>
                 </div>
               )}
@@ -121,7 +123,7 @@ export default function Chatbot() {
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-2 p-1.5 bg-white text-black rounded-full disabled:opacity-50 transition-opacity"
+                  className="absolute right-2 p-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full disabled:opacity-50 transition-colors"
                 >
                   <Send className="h-4 w-4" />
                 </button>
