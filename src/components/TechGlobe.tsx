@@ -294,7 +294,8 @@ function DataStreams() {
       
       const color = skills[Math.floor(Math.random() * skills.length)].color;
       const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0 });
-      arr.push(<line key={i} geometry={geo} material={mat} />);
+      const lineObj = new THREE.Line(geo, mat);
+      arr.push(<primitive key={i} object={lineObj} />);
     }
     return arr;
   }, []);
