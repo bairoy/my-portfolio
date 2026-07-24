@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: "user" | "ai", text: string }[]>([
-    { role: "ai", text: "Hi! I'm Baiju's AI assistant. Ask me anything about his experience or projects!" }
+    { role: "ai", text: "Hi! I'm **Baiju AI**. Ask me anything about Baiju's experience or projects!" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +65,7 @@ export default function Chatbot() {
             <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 bg-white/5">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="font-medium text-white">Ask Baiju's AI</span>
+                <span className="font-medium text-white">Baiju AI</span>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
                 <X className="h-5 w-5" />
@@ -79,7 +80,22 @@ export default function Chatbot() {
                       ? "bg-white text-black rounded-tr-sm"
                       : "bg-white/10 text-white rounded-tl-sm border border-white/5"
                     }`}>
-                    {msg.text}
+                    {msg.role === "user" ? (
+                      msg.text
+                    ) : (
+                      <ReactMarkdown
+                        components={{
+                          p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                          ul: ({ node, ...props }) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
+                          ol: ({ node, ...props }) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
+                          li: ({ node, ...props }) => <li className="" {...props} />,
+                          strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
+                          a: ({ node, ...props }) => <a className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
+                    )}
                   </div>
                 </div>
               ))}
