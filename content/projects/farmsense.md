@@ -4,6 +4,7 @@ subtitle: AI-Powered Precision Agriculture Platform
 description: An intelligent farm management platform that helps farmers manage
   crops, detect diseases, track field activities, and receive AI-powered
   recommendations through a conversational assistant.
+imagePath: /uploads/farmsense-frontend.jpeg
 githubUrl: https://github.com/bairoy/FarmSense
 tech: Artificial Intelligence, Precision Agriculture, Computer Vision, Automation
 ---
