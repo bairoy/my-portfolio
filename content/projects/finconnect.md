@@ -4,6 +4,7 @@ subtitle: Social Investing Platform
 description: A full-stack social investing platform that enables investors to
   connect, share market insights, build professional networks, and engage
   through an interactive social feed.
+imagePath: /uploads/finconnect.png
 githubUrl: https://github.com/bairoy/finconnect
 tech: Social Networking, Full-Stack Development, System Design, Cloud Storage
 ---
